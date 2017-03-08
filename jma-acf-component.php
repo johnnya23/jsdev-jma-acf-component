@@ -121,16 +121,13 @@ function jma_comp_css(){
         .tabs-left > .nav-pills>li>a {
             padding-left: 8px;
             padding-right: 8px
+            }
+            .nav-pills>li+li {
+            margin-left: 1px;
         }
-        .nav-pills>li+li {
-        margin-left: 1px;
     }
-    }
-    .jma-tabbed .tab-content .nav {
-        height:44px
-    }
-    .jma-tabbed .tab-content .nav:after {
-        clear: none
+    .jma-tabbed .tab-content  {
+        overflow: hidden; /* allow clears to work correctly within this element */
     }';
 
         if ( $print )
