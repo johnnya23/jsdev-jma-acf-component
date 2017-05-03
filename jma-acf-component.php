@@ -60,9 +60,6 @@ function jma_comp_css(){
     .jma-tabbed .nav li a {
     white-space: nowrap;
     }
-        .nav-pills>li+li {
-        margin-left: 0;
-    }
     .jma-accordion.panel-group .panel+.panel {
     margin-top: 1px;
     }
