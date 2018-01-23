@@ -1,17 +1,20 @@
 <?php
-class JMAComponentAccordion extends JMAComponent {
-    public function markup(){
+class JMAComponentAccordion extends JMAComponent
+{
+    public function markup()
+    {
         $content = $this->content;
         $accordion_array = $content['tabs_content'];
-        if(!(is_array($accordion_array) && count($accordion_array)))//returns if $accordion_array not useful
+        if (!(is_array($accordion_array) && count($accordion_array))) {//returns if $accordion_array not useful
             return;
+        }
         $return = '<div ';
         $return .= 'id="' . $content['comp_id'] . '" ';
         $return .= 'class="' . $content['custom_class'] . ' tb-accordion panel-group jma-component jma-' . strtolower($content['acf_fc_layout']) . '"';
         $return .= '>';
         foreach ($accordion_array as $i => $accordion_pair) {
             $trigger = $in = '';
-            if($content['open'] && !$i){
+            if ($content['open'] && !$i) {
                 $trigger = ' active-trigger';
                 $in = ' in';
             }
@@ -23,39 +26,44 @@ class JMAComponentAccordion extends JMAComponent {
             $return .= '</a>';
             $return .= '</div><!--panel-heading-->';
             $return .= '<div id="collapse' . $content['comp_id'] . $i . '" class="panel-collapse collapse' . $in . '"><div>';
-            $return .= apply_filters('the_content',$accordion_pair['content']);
+            $return .= apply_filters('the_content', $accordion_pair['content']);
             $return .= '</div></div></div><!--panel-default-->';
-
         }
         $return .= '</div><!--panel-group-->';
         return $return;
     }
 
-    public function css(){
+    public function css()
+    {
         $content = $this->content;
         $group_class = '#' . $this->id . '.jma-component.jma-accordion';
-        if($content['inactive_bg'])
-        $return = $group_class . '.panel-group .panel-default>.panel-heading a {
+        if ($content['inactive_bg']) {
+            $return = $group_class . '.panel-group .panel-default>.panel-heading a {
             background-color: ' . $content['inactive_bg'] . ';
             border-color: #cccccc;
         }';
-        if($content['inactive_text'])
-        $return .= $group_class . '.panel-group .panel-default>.panel-heading a {
+        }
+        if ($content['inactive_text']) {
+            $return .= $group_class . '.panel-group .panel-default>.panel-heading a {
             color: ' . $content['inactive_text'] . ';
         }';
-        if($content['active_bg'])
-        $return .=  $group_class . '.panel-group .panel-default>.panel-heading a.active-trigger {
+        }
+        if ($content['active_bg']) {
+            $return .=  $group_class . '.panel-group .panel-default>.panel-heading a.active-trigger {
             background-color: ' . $content['active_bg'] . ';
         }';
-        if($content['active_text'])
-        $return .=  $group_class . '.panel-group .panel-default>.panel-heading a.active-trigger {
+        }
+        if ($content['active_text']) {
+            $return .=  $group_class . '.panel-group .panel-default>.panel-heading a.active-trigger {
             color: ' . $content['active_text'] . ';
         }';
+        }
 
         return $return;
     }
 
-    static function css_filter(){
+    public static function css_filter()
+    {
         $group_class = '.jma-component.jma-accordion';
         $jma_spec_options = jma_get_theme_values();//echo '<pre>';print_r($jma_spec_options);echo '</pre>';
 
