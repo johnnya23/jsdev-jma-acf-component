@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: JMA Advanced Custom Fields Components
-Description: This plugin creates an accordions and tabs from Advanced Custom Fields flexible content field
-Version: 1.0
+Description: Updated for Theme ver 2.2 This plugin creates an accordions and tabs from Advanced Custom Fields flexible content field
+Version: 1.1
 Author: John Antonacci
 Author URI: http://cleansupersites.com
 License: GPL2
