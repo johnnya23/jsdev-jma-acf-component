@@ -10,7 +10,7 @@ class JMAComponentAccordion extends JMAComponent
         }
         $return = '<div ';
         $return .= 'id="' . $content['comp_id'] . '" ';
-        $return .= 'class="' . $content['custom_class'] . ' tb-accordion panel-group jma-component jma-' . strtolower($content['acf_fc_layout']) . '"';
+        $return .= 'class="tb-accordion panel-group jma-component jma-' . strtolower($content['acf_fc_layout']) . ' ' . $content['custom_class'] . '"';
         $return .= '>';
         foreach ($accordion_array as $i => $accordion_pair) {
             $trigger = $in = '';
@@ -20,11 +20,11 @@ class JMAComponentAccordion extends JMAComponent
             }
 
             $return .= '<div class="tb-toggle panel panel-default">';// panel-default
-            $return .= '<div class="jma-panel-heading">';//jma-panel-heading
+            $return .= '<div class="panel-heading">';//panel-heading
             $return .= '<a class="accordion-cat panel-title' . $trigger . '" data-toggle="collapse" data-parent="#accordion" href="#collapse' . $content['comp_id'] . $i . '">';
             $return .= '<i class="fa fa-angle-right switch-me"></i>' . $accordion_pair['tab'];
             $return .= '</a>';
-            $return .= '</div><!--jma-panel-heading-->';
+            $return .= '</div><!--panel-heading-->';
             $return .= '<div id="collapse' . $content['comp_id'] . $i . '" class="panel-collapse collapse' . $in . '"><div>';
             $return .= apply_filters('the_content', $accordion_pair['content']);
             $return .= '</div></div></div><!--panel-default-->';
@@ -38,23 +38,23 @@ class JMAComponentAccordion extends JMAComponent
         $content = $this->content;
         $group_class = '#' . $this->id . '.jma-component.jma-accordion';
         if ($content['inactive_bg']) {
-            $return = $group_class . '.panel-group .panel-default>.jma-panel-heading a {
+            $return = $group_class . '.panel-group .panel-default>.panel-heading a {
             background-color: ' . $content['inactive_bg'] . ';
             border-color: #cccccc;
         }';
         }
         if ($content['inactive_text']) {
-            $return .= $group_class . '.panel-group .panel-default>.jma-panel-heading a {
+            $return .= $group_class . '.panel-group .panel-default>.panel-heading a {
             color: ' . $content['inactive_text'] . ';
         }';
         }
         if ($content['active_bg']) {
-            $return .=  $group_class . '.panel-group .panel-default>.jma-panel-heading a.active-trigger {
+            $return .=  $group_class . '.panel-group .panel-default>.panel-heading a.active-trigger {
             background-color: ' . $content['active_bg'] . ';
         }';
         }
         if ($content['active_text']) {
-            $return .=  $group_class . '.panel-group .panel-default>.jma-panel-heading a.active-trigger {
+            $return .=  $group_class . '.panel-group .panel-default>.panel-heading a.active-trigger {
             color: ' . $content['active_text'] . ';
         }';
         }
@@ -67,18 +67,18 @@ class JMAComponentAccordion extends JMAComponent
         $group_class = '.jma-component.jma-accordion';
         $jma_spec_options = jma_get_theme_values();//echo '<pre>';print_r($jma_spec_options);echo '</pre>';
 
-        $dynamic_styles['compacc'] =  array($group_class . '.panel-group .panel-default>.jma-panel-heading a',
+        $dynamic_styles['compacc'] =  array($group_class . '.panel-group .panel-default>.panel-heading a',
             array('background-color', $jma_spec_options['footer_background_color']),
             array('border-color', $jma_spec_options['footer_font_color']),
             array('color', $jma_spec_options['footer_font_color'])
         );
-        $dynamic_styles['compacc05'] =  array($group_class . '.panel-group .panel-default>.jma-panel-heading a:hover',
+        $dynamic_styles['compacc05'] =  array($group_class . '.panel-group .panel-default>.panel-heading a:hover',
             array('opacity', '0.9')
         );
-        $dynamic_styles['compacc07'] =  array($group_class . '.panel-group .panel-default>.jma-panel-heading a.active-trigger:hover',
+        $dynamic_styles['compacc07'] =  array($group_class . '.panel-group .panel-default>.panel-heading a.active-trigger:hover',
             array('opacity', '1')
         );
-        $dynamic_styles['compacc10'] =  array($group_class . '.panel-group .tb-toggle.panel-default>.jma-panel-heading .panel-title.active-trigger',
+        $dynamic_styles['compacc10'] =  array($group_class . '.panel-group .tb-toggle.panel-default>.panel-heading .panel-title.active-trigger',
             array('background-color', $jma_spec_options['footer_font_color']),
         );
         $dynamic_styles['compacc15'] =  array($group_class . '.panel-group .panel a.active-trigger',
