@@ -16,6 +16,12 @@ License: GPL2
  * @param int or object $post_item - the post to search (defaults to current)
  * @return boolean $return
  */
+if (! defined('JMACOMP_DIR')) {
+    define('JMACOMP_DIR', plugin_dir_path(__FILE__));
+}
+
+//require JMACOMP_DIR . 'acf-post-type-selector/acf-post-type-selector.php';
+
 function jmaacf_detect_shortcode($needle = '', $post_item = 0)
 {
     if ($post_item) {
@@ -55,11 +61,12 @@ spl_autoload_register('jma_component_autoloader');
 function jma_component_autoloader($class_name)
 {
     if (false !== strpos($class_name, 'JMAComp')) {
-        $classes_dir = realpath(plugin_dir_path(__FILE__));
+        $classes_dir = realpath(plugin_dir_path(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
         $class_file = $class_name . '.php';
         require_once $classes_dir . DIRECTORY_SEPARATOR . $class_file;
     }
 }
+new JMACompPostTypeSelector();
 
 
 /**
@@ -80,10 +87,10 @@ function jma_comp_setup_objs()
             echo '</pre>';
 
 
-            /*$row_id = $row['comp_id'];
+            $row_id = $row['comp_id'];
             $row_type = $row['acf_fc_layout'];
             $class = 'JMAComponent' . $row_type;
-            $return[$row_id]  = new $class($row);*/
+            $return[$row_id]  = new $class($row);
         }
     }
     return $return;
@@ -169,7 +176,7 @@ function jma_comp_css()
     }';
 
     if ($print) {
-        wp_add_inline_style('themeblvd-theme', apply_filters('jumpstart_ent_css_output', $print));
+        wp_add_inline_style('themeblvd-theme', apply_filters('jma_acf_css_output', $print));
     }
 }
 add_action('wp_enqueue_scripts', 'jma_comp_css', 99);
@@ -183,7 +190,7 @@ function get_comp_classes()
         // which is essentially the class name
         $class = basename($file, '.php');
 
-        if (false !== strpos($class, 'JMAComp')) {
+        if (false !== strpos($class, 'JMAComponent')) {
             $return[] = $class;
         }
     }
@@ -217,23 +224,163 @@ function acf_component_shortcode($atts = array())
     $comps = jma_comp_setup_objs();
     $this_comp = $comps[$id];
     ob_start();
-    //echo $this_comp->markup();
+    echo $this_comp->markup();
     $x = ob_get_contents();
     ob_end_clean();
 
-    return $x;
+    return $x . 'www';
 }
 add_shortcode('acf_component', 'acf_component_shortcode');
 
 
 if (function_exists('acf_add_local_field_group')):
+function post_group_options()
+{
+    $args = array(
+       'public'   => true,
+       '_builtin' => false
+    );
 
-acf_add_local_field_group(array(
+    $post_types = get_post_types($args);
+    array_unshift($post_types, "page", "post");
+    acf_add_local_field_group(array(
+        'key' => 'group_5c72a2077eb8e',
+        'title' => 'Defaults',
+        'fields' => array(
+            array(
+                'key' => 'field_5c72a25023276',
+                'label' => 'Active Background Color',
+                'name' => 'active_bg',
+                'type' => 'color_picker',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'default_value' => '#ffffff',
+            ),
+            array(
+                'key' => 'field_5c72a4ff23277',
+                'label' => 'Active Font Color',
+                'name' => 'active_font',
+                'type' => 'color_picker',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'default_value' => '#000066',
+            ),
+            array(
+                'key' => 'field_5c72a53623278',
+                'label' => 'Inactive Background Color',
+                'name' => 'inactive_bg',
+                'type' => 'color_picker',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'default_value' => '#000066',
+            ),
+            array(
+                'key' => 'field_5c72a56c23279',
+                'label' => 'Inactive Font Color',
+                'name' => 'inactive_font',
+                'type' => 'color_picker',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'default_value' => '#ffffff',
+            ),
+            array(
+                'key' => 'field_5c72a7ec47a2c',
+                'label' => 'Location',
+                'name' => 'location',
+                'type' => 'post_object',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'post_type' => $post_types,
+                'taxonomy' => '',
+                'allow_null' => 0,
+                'multiple' => 1,
+                'return_format' => 'object',
+                'ui' => 1,
+            ),
+            array(
+                'key' => 'field_5c72ae5531046',
+                'label' => 'Post Type',
+                'name' => 'post_type',
+                'type' => 'post_type_selector',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'select_type' => 'Checkboxes',
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'options_page',
+                    'operator' => '==',
+                    'value' => 'jma-component-settings',
+                ),
+            ),
+        ),
+        'menu_order' => 0,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'hide_on_screen' => '',
+        'active' => 1,
+        'description' => '',
+    ));
+
+
+    $posts = get_field('location', 'option');
+    $types = get_field('post_type', 'option');
+    $location = array();
+    foreach ($types as $type) {
+        $location[] = array(
+            array(
+            'param' => 'post_type',
+            'operator' => '==',
+            'value' => $type
+        )
+    );
+    }
+    acf_add_local_field_group(array(
     'key' => 'group_57e7318d8e3a0',
     'title' => 'ACF Components',
     'fields' => array(
         array(
-            'key' => 'field_58628bcc38169',
+            'key' => 'components',
             'label' => 'Components',
             'name' => 'components',
             'type' => 'flexible_content',
@@ -250,13 +397,13 @@ acf_add_local_field_group(array(
             'button_label' => 'Add Component',
             'layouts' => array(
                 array(
-                    'key' => '58628bf93722a',
+                    'key' => 'Accordion',
                     'name' => 'Accordion',
                     'label' => 'Accordion',
                     'display' => 'block',
                     'sub_fields' => array(
                         array(
-                            'key' => 'field_586296f616239',
+                            'key' => 'comp_id',
                             'label' => 'Component Id',
                             'name' => 'comp_id',
                             'type' => 'text',
@@ -275,7 +422,7 @@ acf_add_local_field_group(array(
                             'append' => '',
                         ),
                         array(
-                            'key' => 'field_5866d4cab0566',
+                            'key' => 'custom_class',
                             'label' => 'Custom Class',
                             'name' => 'custom_class',
                             'type' => 'text',
@@ -294,7 +441,7 @@ acf_add_local_field_group(array(
                             'append' => '',
                         ),
                         array(
-                            'key' => 'field_5866d21d65dff',
+                            'key' => 'open',
                             'label' => 'Open First Panel',
                             'name' => 'open',
                             'type' => 'radio',
@@ -318,7 +465,7 @@ acf_add_local_field_group(array(
                             'return_format' => 'value',
                         ),
                         array(
-                            'key' => 'field_58628f6138173',
+                            'key' => 'inactive_bg',
                             'label' => 'Inactive Background',
                             'name' => 'inactive_bg',
                             'type' => 'color_picker',
@@ -333,7 +480,7 @@ acf_add_local_field_group(array(
                             'default_value' => '',
                         ),
                         array(
-                            'key' => 'field_5862900338174',
+                            'key' => 'inactive_text',
                             'label' => 'Inactive Text',
                             'name' => 'inactive_text',
                             'type' => 'color_picker',
@@ -348,7 +495,7 @@ acf_add_local_field_group(array(
                             'default_value' => '',
                         ),
                         array(
-                            'key' => 'field_5862901d38175',
+                            'key' => 'active_bg',
                             'label' => 'Active Background',
                             'name' => 'active_bg',
                             'type' => 'color_picker',
@@ -363,7 +510,7 @@ acf_add_local_field_group(array(
                             'default_value' => '',
                         ),
                         array(
-                            'key' => 'field_5862907638176',
+                            'key' => 'active_text',
                             'label' => 'Active Text',
                             'name' => 'active_text',
                             'type' => 'color_picker',
@@ -378,7 +525,7 @@ acf_add_local_field_group(array(
                             'default_value' => '',
                         ),
                         array(
-                            'key' => 'field_58628c663816a',
+                            'key' => 'tabs_content',
                             'label' => 'Tabs/Content',
                             'name' => 'tabs_content',
                             'type' => 'repeater',
@@ -397,7 +544,7 @@ acf_add_local_field_group(array(
                             'button_label' => '',
                             'sub_fields' => array(
                                 array(
-                                    'key' => 'field_58628d0e3816b',
+                                    'key' => 'tab',
                                     'label' => 'Tab',
                                     'name' => 'tab',
                                     'type' => 'textarea',
@@ -416,7 +563,7 @@ acf_add_local_field_group(array(
                                     'rows' => 3,
                                 ),
                                 array(
-                                    'key' => 'field_58628d683816c',
+                                    'key' => 'content',
                                     'label' => 'Content',
                                     'name' => 'content',
                                     'type' => 'wysiwyg',
@@ -441,13 +588,13 @@ acf_add_local_field_group(array(
                     'max' => '',
                 ),
                 array(
-                    'key' => '58628da73816d',
+                    'key' => 'Tabbed',
                     'name' => 'Tabbed',
                     'label' => 'Tabbed',
                     'display' => 'block',
                     'sub_fields' => array(
                         array(
-                            'key' => 'field_5862964c9176e',
+                            'key' => 'comp_id',
                             'label' => 'Component Id',
                             'name' => 'comp_id',
                             'type' => 'text',
@@ -466,7 +613,7 @@ acf_add_local_field_group(array(
                             'append' => '',
                         ),
                         array(
-                            'key' => 'field_5866d518b0567',
+                            'key' => 'custom_class',
                             'label' => 'Custom Class',
                             'name' => 'custom_class',
                             'type' => 'text',
@@ -485,7 +632,7 @@ acf_add_local_field_group(array(
                             'append' => '',
                         ),
                         array(
-                            'key' => 'field_58628dec38171',
+                            'key' => 'alignment',
                             'label' => 'Alignment',
                             'name' => 'alignment',
                             'type' => 'radio',
@@ -509,7 +656,7 @@ acf_add_local_field_group(array(
                             'return_format' => 'value',
                         ),
                         array(
-                            'key' => 'field_58628eaa38172',
+                            'key' => 'display',
                             'label' => 'Display',
                             'name' => 'display',
                             'type' => 'radio',
@@ -534,7 +681,7 @@ acf_add_local_field_group(array(
                             'return_format' => 'value',
                         ),
                         array(
-                            'key' => 'field_5862976e95783',
+                            'key' => 'inactive_bg',
                             'label' => 'Inactive Background',
                             'name' => 'inactive_bg',
                             'type' => 'color_picker',
@@ -549,7 +696,7 @@ acf_add_local_field_group(array(
                             'default_value' => '',
                         ),
                         array(
-                            'key' => 'field_5862978595784',
+                            'key' => 'inactive_text',
                             'label' => 'Inactive Text',
                             'name' => 'inactive_text',
                             'type' => 'color_picker',
@@ -564,7 +711,7 @@ acf_add_local_field_group(array(
                             'default_value' => '',
                         ),
                         array(
-                            'key' => 'field_5862979995785',
+                            'key' => 'active_bg',
                             'label' => 'Active Background',
                             'name' => 'active_bg',
                             'type' => 'color_picker',
@@ -587,7 +734,7 @@ acf_add_local_field_group(array(
                             'default_value' => '',
                         ),
                         array(
-                            'key' => 'field_586297ae95786',
+                            'key' => 'active_text',
                             'label' => 'Active Text',
                             'name' => 'active_text',
                             'type' => 'color_picker',
@@ -602,7 +749,7 @@ acf_add_local_field_group(array(
                             'default_value' => '',
                         ),
                         array(
-                            'key' => 'field_58628da73816e',
+                            'key' => 'tabs_content',
                             'label' => 'Tabs/Content',
                             'name' => 'tabs_content',
                             'type' => 'repeater',
@@ -621,7 +768,7 @@ acf_add_local_field_group(array(
                             'button_label' => '',
                             'sub_fields' => array(
                                 array(
-                                    'key' => 'field_58628da73816f',
+                                    'key' => 'tab',
                                     'label' => 'Tab',
                                     'name' => 'tab',
                                     'type' => 'textarea',
@@ -640,7 +787,7 @@ acf_add_local_field_group(array(
                                     'rows' => 3,
                                 ),
                                 array(
-                                    'key' => 'field_58628da738170',
+                                    'key' => 'content',
                                     'label' => 'Content',
                                     'name' => 'content',
                                     'type' => 'wysiwyg',
@@ -667,15 +814,7 @@ acf_add_local_field_group(array(
             ),
         ),
     ),
-    'location' => array(
-        array(
-            array(
-                'param' => 'post_type',
-                'operator' => '==',
-                'value' => 'page',
-            ),
-        )
-    ),
+    'location' => $location,
     'menu_order' => 0,
     'position' => 'normal',
     'style' => 'default',
@@ -685,5 +824,6 @@ acf_add_local_field_group(array(
     'active' => 1,
     'description' => '',
 ));
-
+}
+add_action('admin_init', 'post_group_options', 999);
 endif;
