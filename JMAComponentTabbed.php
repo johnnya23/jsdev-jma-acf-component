@@ -1,24 +1,22 @@
 <?php
-class JMAComponentTabbed extends JMAComponent {
-
-    public function markup(){
+class JMAComponentTabbed extends JMAComponent
+{
+    public function markup()
+    {
         $content = $this->content;
         $tabbed_array = $content['tabs_content'];
-        if(!(is_array($tabbed_array) && count($tabbed_array)))//reutns if $tabbed_array not useful
+        if (!(is_array($tabbed_array) && count($tabbed_array))) {//reutns if $tabbed_array not useful
             return;
+        }
         $wrap_cl = '';
         $ul_pill_cl = 'tabs';
-        if($content['display'] != 'tabs'){
-
+        if ($content['display'] != 'tabs') {
             $wrap_cl .= 'tb-tabs-pills';
             $ul_pill_cl = 'pills';
         }
-        if($content['display'] == 'arrows'){
-
+        if ($content['display'] == 'arrows') {
             $wrap_cl .= ' tabs-left tab-arrows';
-        }
-        elseif($content['alignment'] == 'left'){
-
+        } elseif ($content['alignment'] == 'left') {
             $wrap_cl .= ' tabs-left';
         }
 
@@ -30,7 +28,7 @@ class JMAComponentTabbed extends JMAComponent {
         $tab_content = '<div class="tab-content dark">';
         foreach ($tabbed_array as $i => $tabbed_pair) {
             $active =  '';
-            if(!$i){
+            if (!$i) {
                 $active =  'active';
             }
             $tabs .= '<li class="' . $active . '">';
@@ -42,9 +40,8 @@ class JMAComponentTabbed extends JMAComponent {
 
             $tab_content .= '<div id="tab_' . $content['comp_id'] . $i . '" class="tab-pane entry-content fade in clearfix ' . $active . '">';
 
-            $tab_content .= apply_filters('the_content',$tabbed_pair['content']);
+            $tab_content .= apply_filters('the_content', $tabbed_pair['content']);
             $tab_content .= '</div><!--tab-pane-->';
-
         }
         $tabs .= '</ul><!--nav-tabs-->';
         $tab_content .= '</div><!--tab-content-->';
@@ -53,36 +50,40 @@ class JMAComponentTabbed extends JMAComponent {
         return $return;
     }
 
-    public function css(){
+    public function css()
+    {
         $return = '';
         $content = $this->content;
         $group_class = '#' . $this->id . '.jma-component.jma-tabbed';
-        if($content['inactive_bg'])
+        if ($content['inactive_bg']) {
             $return = $group_class . ' .nav>li>a {
             background-color: ' . $content['inactive_bg'] . ';
         }';
-        if($content['inactive_text'])
+        }
+        if ($content['inactive_text']) {
             $return .= $group_class . ' .nav>li>a {
             color: ' . $content['inactive_text'] . ';
         }';
-        if($content['active_bg']){
+        }
+        if ($content['active_bg']) {
             $return .=  $group_class . ' .nav-pills>li.active>a {
             background-color: ' . $content['active_bg'] . '!important;
         }';
             $return .=  $group_class . '.tabs-left.tab-arrows .nav-pills>li.active:after {
             border-color: transparent transparent transparent ' . $content['active_bg'] . '
         }';
-
         }
-        if($content['active_text'])
+        if ($content['active_text']) {
             $return .=  $group_class . ' .nav>li.active>a {
             color: ' . $content['active_text'] . ';
         }';
+        }
 
         return $return;
     }
 
-    static function css_filter(){
+    public static function css_filter()
+    {
         $group_class = '.jma-component.jma-tabbed';
         $jma_spec_options = jma_get_theme_values();//echo '<pre>';print_r($jma_spec_options);echo '</pre>';
 
@@ -127,5 +128,4 @@ class JMAComponentTabbed extends JMAComponent {
 
         return $dynamic_styles;
     }
-
 }

@@ -1,22 +1,25 @@
 <?php
-class JMAComponent {
-    var $content;
-    var $id;
+class JMAComponent
+{
+    public $content;
+    public $id;
 
 
-    function __construct($content) {
+    public function __construct($content)
+    {
         $this->content = $content;
         $this->id = $content['comp_id'];
     }
 
-    public function css(){
+    public function css()
+    {
         $return = '';
         return $return;
     }
 
-    static function css_filter(){
+    public static function css_filter()
+    {
         $return = array();
         return $return;
     }
-
 }

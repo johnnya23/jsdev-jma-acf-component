@@ -22,7 +22,7 @@ class JMAComponentAccordion extends JMAComponent
             $return .= '<div class="tb-toggle panel panel-default">';// panel-default
             $return .= '<div class="panel-heading">';//panel-heading
             $return .= '<a class="accordion-cat panel-title' . $trigger . '" data-toggle="collapse" data-parent="#accordion" href="#collapse' . $content['comp_id'] . $i . '">';
-            $return .= '<i class="fa fa-angle-right switch-me"></i>' . $accordion_pair['tab'];
+            $return .= '<i class="fas fa-angle-right icon-show switch-me"></i><i class="fas fa-angle-down icon-hide switch-me"></i>' . $accordion_pair['tab'];
             $return .= '</a>';
             $return .= '</div><!--panel-heading-->';
             $return .= '<div id="collapse' . $content['comp_id'] . $i . '" class="panel-collapse collapse' . $in . '"><div>';
