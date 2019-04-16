@@ -194,20 +194,6 @@ function get_comp_classes()
 }
 
 
-function jma_comp_filter($dynamic_styles)
-{
-    $comp_classes = get_comp_classes();
-    if (is_array($comp_classes)) {
-        foreach ($comp_classes as $comp_class) {
-            $dynamic_styles = array_merge($dynamic_styles, $comp_class::css_filter());
-        }
-    }
-
-    return $dynamic_styles;
-}
-//add_filter('dynamic_styles_filter', 'jma_comp_filter');
-
-
 
 function acf_component_shortcode($atts = array())
 {
