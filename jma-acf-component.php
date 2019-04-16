@@ -70,7 +70,8 @@ new JMACompPostTypeSelector();
 
 
 /**
- * function jma_comp_setup_objs instantiates an objct for each component detected,
+ * function jma_comp_setup_objs instantiates an objct with the name of the row id
+ * for each component detected
  *  @uses have_rows from acf plugin
  *
  * @return boolean $return - array of objects with the comp_id value as their index
@@ -81,14 +82,11 @@ function jma_comp_setup_objs()
     if (have_rows('components')) {
         while (have_rows('components')) {
             the_row();
-            $row = get_row();
-
-
+            $row = get_row(true);
             $row_type = $row['acf_fc_layout'];
-            $lower_row_type = strtolower($row_type);
-            $row_id = $row[$lower_row_type .'_comp_id'];
+            $row_id = $row['comp_id'];
             $class = 'JMAComponent' . $row_type;
-            $return[$row_id]  = new $class($row);
+            $return[$row_id] = new $class($row);
         }
     }
     return $return;
@@ -207,15 +205,12 @@ function jma_comp_filter($dynamic_styles)
 
     return $dynamic_styles;
 }
-add_filter('dynamic_styles_filter', 'jma_comp_filter');
+//add_filter('dynamic_styles_filter', 'jma_comp_filter');
 
 
 
 function acf_component_shortcode($atts = array())
 {
-    echo '<pre>';
-    print_r(get_fields());
-    echo '</pre>';
     if (!function_exists('have_rows') || !have_rows('components')) {//returns if acf not active
         return;
     }
@@ -233,6 +228,15 @@ function acf_component_shortcode($atts = array())
 }
 add_shortcode('acf_component', 'acf_component_shortcode');
 
+if (function_exists('acf_add_options_page')) {
+    acf_add_options_page(array(
+        'page_title' 	=> 'Component Settings',
+        'menu_title'	=> 'Component Settings',
+        'menu_slug' 	=> 'jma-component-settings',
+        'capability'	=> 'edit_posts',
+        'redirect'		=> false
+    ));
+}
 
 if (function_exists('acf_add_local_field_group')) {
     include('jma-acf-addfieldgroups.php');

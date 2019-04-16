@@ -18,7 +18,7 @@ function post_group_options()
             array(
                 'key' => 'field_5c72a25023276',
                 'label' => 'Active Background Color',
-                'name' => 'active_bg',
+                'name' => 'jma_comp_active_bg',
                 'type' => 'color_picker',
                 'instructions' => '',
                 'required' => 0,
@@ -33,7 +33,7 @@ function post_group_options()
             array(
                 'key' => 'field_5c72a4ff23277',
                 'label' => 'Active Font Color',
-                'name' => 'active_font',
+                'name' => 'jma_comp_active_text',
                 'type' => 'color_picker',
                 'instructions' => '',
                 'required' => 0,
@@ -48,7 +48,7 @@ function post_group_options()
             array(
                 'key' => 'field_5c72a53623278',
                 'label' => 'Inactive Background Color',
-                'name' => 'inactive_bg',
+                'name' => 'jma_comp_inactive_bg',
                 'type' => 'color_picker',
                 'instructions' => '',
                 'required' => 0,
@@ -63,7 +63,7 @@ function post_group_options()
             array(
                 'key' => 'field_5c72a56c23279',
                 'label' => 'Inactive Font Color',
-                'name' => 'inactive_font',
+                'name' => 'jma_comp_inactive_text',
                 'type' => 'color_picker',
                 'instructions' => '',
                 'required' => 0,
@@ -78,7 +78,7 @@ function post_group_options()
             array(
                 'key' => 'field_5c72a7ec47a2c',
                 'label' => 'Location',
-                'name' => 'location',
+                'name' => 'jma_comp_location',
                 'type' => 'post_object',
                 'instructions' => '',
                 'required' => 0,
@@ -98,7 +98,7 @@ function post_group_options()
             array(
                 'key' => 'field_5c72ae5531046',
                 'label' => 'Post Type',
-                'name' => 'post_type',
+                'name' => 'jma_comp_post_type',
                 'type' => 'post_type_selector',
                 'instructions' => '',
                 'required' => 0,
@@ -132,7 +132,8 @@ function post_group_options()
 
     /* pull types from settings page to determine visibility on pages/posts */
     //$posts = get_field('location', 'option');
-    $types = get_field('post_type', 'option');
+    $types = get_field('jma_comp_post_type', 'option');
+    $posts = get_field('jma_comp_location', 'option');
     $location = array();
     foreach ($types as $type) {
         $location[] = array(
@@ -140,6 +141,16 @@ function post_group_options()
                 'param' => 'post_type',
                 'operator' => '==',
                 'value' => $type
+            )
+        );
+    }
+    foreach ($posts as $post) {
+        $param = is_page($post)?'page':'post';
+        $location[] = array(
+                array(
+                'param' => $param,
+                'operator' => '==',
+                'value' => $post->ID
             )
         );
     }
