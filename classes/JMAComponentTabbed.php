@@ -1,4 +1,10 @@
 <?php
+
+
+if (! defined('ABSPATH')) {
+    die('Invalid request.');
+}
+
 class JMAComponentTabbed extends JMAComponent
 {
     public function markup()

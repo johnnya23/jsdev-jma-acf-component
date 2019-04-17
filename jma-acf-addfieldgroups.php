@@ -1,6 +1,10 @@
 <?php
 
-function post_group_options()
+if (! defined('ABSPATH')) {
+    die('Invalid request.');
+}
+
+function jma_comp_post_group_options()
 {
     $args = array(
        'public'   => true,
@@ -607,4 +611,4 @@ function post_group_options()
         )
     );
 }
-add_action('acf/init', 'post_group_options', 999);
+add_action('acf/init', 'jma_comp_post_group_options', 999);

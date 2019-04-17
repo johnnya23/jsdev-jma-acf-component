@@ -8,6 +8,10 @@ Author URI: http://cleansupersites.com
 License: GPL2
 */
 
+if (! defined('ABSPATH')) {
+    die('Invalid request.');
+}
+
 /**
  * function jmaacf_detect_shortcode Detect shortcodes in a post object,
  *  from a post id or from global $post.
@@ -53,6 +57,24 @@ function jmaacf_detect_shortcode($needle = '', $post_item = 0)
     }
     return apply_filters('jmaacf_detect_shortcode_result', $return, $post, $needle);
 }
+
+function jma_comp_layout_title($title, $field, $layout, $i)
+{
+    if ($value = get_sub_field('comp_id')) {
+        return $title . ' - ' . $value;
+    } else {
+        foreach ($layout['sub_fields'] as $sub) {
+            if ($sub['name'] == 'comp_id') {
+                $key = $sub['key'];
+                if (array_key_exists($i, $field['value']) && $value = $field['value'][$i][$key]) {
+                    return $title . ' - ' . $value;
+                }
+            }
+        }
+    }
+    return $title;
+}
+add_filter('acf/fields/flexible_content/layout_title', 'jma_comp_layout_title', 10, 4);
 
 /* accordion shortcode */
 
@@ -213,6 +235,8 @@ function acf_component_shortcode($atts = array())
     return $x;
 }
 add_shortcode('acf_component', 'acf_component_shortcode');
+
+
 
 if (function_exists('acf_add_options_page')) {
     acf_add_options_page(array(

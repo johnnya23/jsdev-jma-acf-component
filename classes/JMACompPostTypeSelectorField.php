@@ -1,5 +1,10 @@
 <?php
 
+
+if (! defined('ABSPATH')) {
+    die('Invalid request.');
+}
+
 class JMACompPostTypeSelectorField extends acf_field
 {
 
