@@ -54,6 +54,24 @@ function jmaacf_detect_shortcode($needle = '', $post_item = 0)
     return apply_filters('jmaacf_detect_shortcode_result', $return, $post, $needle);
 }
 
+function jma_comp_layout_title($title, $field, $layout, $i)
+{
+    if ($value = get_sub_field('comp_id')) {
+        return $title . ' - ' . $value;
+    } else {
+        foreach ($layout['sub_fields'] as $sub) {
+            if ($sub['name'] == 'comp_id') {
+                $key = $sub['key'];
+                if (array_key_exists($i, $field['value']) && $value = $field['value'][$i][$key]) {
+                    return $title . ' - ' . $value;
+                }
+            }
+        }
+    }
+    return $title;
+}
+add_filter('acf/fields/flexible_content/layout_title', 'jma_comp_layout_title', 10, 4);
+
 /* accordion shortcode */
 
 
@@ -197,22 +215,26 @@ function get_comp_classes()
 
 function acf_component_shortcode($atts = array())
 {
-    if (!function_exists('have_rows') || !have_rows('components')) {//returns if acf not active
+    if (!function_exists('have_rows') /*|| !have_rows('components')*/) {//returns if acf not active
+        die();
         return;
     }
-    extract(shortcode_atts(array(
-        'id' => '',
-        ), $atts));
+    echo '<pre>';
+    print_r($atts);
+    echo '</pre>';
     $comps = jma_comp_setup_objs();
-    $this_comp = $comps[$id];
+    $this_comp = $comps[$atts['id']];
     ob_start();
-    echo $this_comp->markup();
+    if (isset($this_comp)) {
+        echo $this_comp->markup();
+    }
     $x = ob_get_contents();
     ob_end_clean();
 
     return $x;
 }
 add_shortcode('acf_component', 'acf_component_shortcode');
+
 
 if (function_exists('acf_add_options_page')) {
     acf_add_options_page(array(
@@ -223,6 +245,27 @@ if (function_exists('acf_add_options_page')) {
         'redirect'		=> false
     ));
 }
+
+function jma_comp_register_blocks()
+{
+
+    // check function exists.
+    if (function_exists('acf_register_block')) {
+        $post_types = get_field('jma_comp_post_type', 'option');
+
+        // register a testimonial block.
+        acf_register_block(array(
+            'name'              => 'jma_components',
+            'title'             => __('ACF Components'),
+            'description'       => __('An accordion or tabs with acf fields.'),
+            'render_callback'   => 'acf_component_shortcode',
+            'category'          => 'common',
+            'align'             => false,
+            'post_types' => $post_types,
+        ));
+    }
+}
+add_action('acf/init', 'jma_comp_register_blocks', 1000);
 
 if (function_exists('acf_add_local_field_group')) {
     include('jma-acf-addfieldgroups.php');
