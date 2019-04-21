@@ -216,7 +216,6 @@ function get_comp_classes()
 function acf_component_shortcode($atts = array())
 {
     if (!function_exists('have_rows') /*|| !have_rows('components')*/) {//returns if acf not active
-        die();
         return;
     }
     echo '<pre>';
