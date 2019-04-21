@@ -219,7 +219,7 @@ function acf_component_shortcode($atts = array())
         return;
     }
     echo '<pre>';
-    print_r($atts);
+    print_r(have_rows('components'));
     echo '</pre>';
     $comps = jma_comp_setup_objs();
     $this_comp = $comps[$atts['id']];
@@ -264,7 +264,8 @@ function jma_comp_register_blocks()
         ));
     }
 }
-add_action('acf/init', 'jma_comp_register_blocks', 1000);
+//add_action('acf/init', 'jma_comp_register_blocks', 20);
+require_once(JMACOMP_DIR . 'blocks' . DIRECTORY_SEPARATOR .  'component' . DIRECTORY_SEPARATOR .'index.php');
 
 if (function_exists('acf_add_local_field_group')) {
     include('jma-acf-addfieldgroups.php');
