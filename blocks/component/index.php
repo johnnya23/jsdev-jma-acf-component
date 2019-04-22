@@ -43,9 +43,6 @@
         'attributes'      => array(
             'id' => array(
                 'type' => 'string',
-            ),
-            'className' => array(
-                'type' => 'string',
             )
         ),
         'editor_script' => 'jma-comp-list-block-script',
