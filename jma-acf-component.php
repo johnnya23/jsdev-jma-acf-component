@@ -112,7 +112,7 @@ function jma_comp_setup_objs()
 
 function jma_comp_css()
 {
-    if (!(jmaacf_detect_shortcode('acf_component') && have_rows('components'))) {
+    if (!(jmaacf_detect_shortcode('acf_component', 'jmacomp-list/block') && have_rows('components'))) {
         return;
     }
     $comp_objs = jma_comp_setup_objs();
@@ -215,13 +215,16 @@ function get_comp_classes()
 
 function acf_component_shortcode($atts = array())
 {
-    if (!function_exists('have_rows') /*|| !have_rows('components')*/) {//returns if acf not active
-        return;
+    if (!function_exists('have_rows') || !have_rows('components')) {//returns if acf not active
+        return 'cant find rows';
     }
     echo '<pre>';
     print_r(have_rows('components'));
     echo '</pre>';
     $comps = jma_comp_setup_objs();
+    if (!isset($atts['id']) || !isset($comps[$atts['id']])) {
+        return 'please enter a valid id';
+    }
     $this_comp = $comps[$atts['id']];
     ob_start();
     if (isset($this_comp)) {
