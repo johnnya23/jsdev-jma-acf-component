@@ -27,8 +27,10 @@ function jmaacf_detect_shortcode($needle = '', $post_item = 0)
     if ($post_item) {
         if (is_object($post_item)) {
             $post = $post_item;
-        } else {
+        } elseif (is_object(get_post($post_item))) {
             $post = get_post($post_item);
+        } else {
+            global $post;
         }
     } else {
         global $post;
@@ -112,7 +114,7 @@ function jma_comp_setup_objs()
 
 function jma_comp_css()
 {
-    if (!(jmaacf_detect_shortcode('acf_component', 'jmacomp-list/block') && have_rows('components'))) {
+    if (!(jmaacf_detect_shortcode(array('acf_component', 'jmacomp-list/block')) && have_rows('components'))) {
         return;
     }
     $comp_objs = jma_comp_setup_objs();
@@ -218,9 +220,9 @@ function acf_component_shortcode($atts = array())
     if (!function_exists('have_rows') || !have_rows('components')) {//returns if acf not active
         return 'cant find rows';
     }
-    echo '<pre>';
-    print_r(have_rows('components'));
-    echo '</pre>';
+    /*echo '<pre>';
+    print_r(get_field('components'));
+    echo '</pre>';*/
     $comps = jma_comp_setup_objs();
     if (!isset($atts['id']) || !isset($comps[$atts['id']])) {
         return 'please enter a valid id';

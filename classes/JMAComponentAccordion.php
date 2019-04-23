@@ -29,7 +29,8 @@ class JMAComponentAccordion extends JMAComponent
             $return .= apply_filters('the_content', $accordion_pair['content']);
             $return .= '</div></div></div><!--panel-default-->';
         }
-        $return .= '</div><!--panel-group-->';
+        $return .= '</div>';
+        $return .= '<!--panel-group-->';
         return $return;
     }
 
