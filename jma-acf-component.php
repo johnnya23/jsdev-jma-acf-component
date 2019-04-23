@@ -218,7 +218,7 @@ function get_comp_classes()
 function acf_component_shortcode($atts = array())
 {
     if (!function_exists('have_rows') || !have_rows('components')) {//returns if acf not active
-        return 'cant find rows';
+        return 'cant find rowss';
     }
     /*echo '<pre>';
     print_r(get_field('components'));
