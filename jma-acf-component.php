@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: JMA Advanced Custom Fields Components
-Description: Updated for Theme ver 2.2 This plugin creates an accordions and tabs from Advanced Custom Fields flexible content field
+Description: This plugin creates an accordions and tabs from Advanced Custom Fields flexible content field (block-native branch)
 Version: 1.1
 Author: John Antonacci
 Author URI: http://cleansupersites.com
@@ -75,7 +75,6 @@ function jma_comp_layout_title($title, $field, $layout, $i)
 add_filter('acf/fields/flexible_content/layout_title', 'jma_comp_layout_title', 10, 4);
 
 /* accordion shortcode */
-
 
 spl_autoload_register('jma_component_autoloader');
 function jma_component_autoloader($class_name)
