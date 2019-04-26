@@ -114,7 +114,7 @@ function jma_comp_setup_objs()
 
 function jma_comp_css()
 {
-    if (!(jmaacf_detect_shortcode(array('acf_component', 'jmacomp-list/block')) && have_rows('components'))) {
+    if (!(jmaacf_detect_shortcode(array('acf_component', 'jma-comp/block')) && have_rows('components'))) {
         return;
     }
     $comp_objs = jma_comp_setup_objs();
