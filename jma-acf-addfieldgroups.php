@@ -607,4 +607,4 @@ function post_group_options()
         )
     );
 }
-//add_action('acf/init', 'post_group_options', 999);
+add_action('acf/init', 'post_group_options', 999);
