@@ -27,21 +27,23 @@ class JMAComponentTabbed extends JMAComponent
         $tabs = '<ul class="nav nav-' . $ul_pill_cl . '">';
         $tab_content = '<div class="tab-content dark">';
         foreach ($tabbed_array as $i => $tabbed_pair) {
-            $active =  '';
-            if (!$i) {
-                $active =  'active';
+            if (!$tabbed_pair['hide']) {
+                $active =  '';
+                if (!$i) {
+                    $active =  'active';
+                }
+                $tabs .= '<li class="' . preg_replace("/(\W)+/", "", strtolower($tabbed_pair['tab'])) . ' ' . $active . '">';
+                $tabs .= '<a href="#tab_' . $content['comp_id'] . $i . '" data-toggle="tab" title="Title #1">';
+                $tabs .= $tabbed_pair['tab'];
+                $tabs .= '</a>';
+                $tabs .= '</li>';
+
+
+                $tab_content .= '<div id="tab_' . $content['comp_id'] . $i . '" class="' . preg_replace("/(\W)+/", "", strtolower($tabbed_pair['tab'])) . ' tab-pane entry-content fade in clearfix ' . $active . '">';
+
+                $tab_content .= apply_filters('the_content', $tabbed_pair['content']);
+                $tab_content .= '</div><!--tab-pane-->';
             }
-            $tabs .= '<li class="' . $active . '">';
-            $tabs .= '<a href="#tab_' . $content['comp_id'] . $i . '" data-toggle="tab" title="Title #1">';
-            $tabs .= $tabbed_pair['tab'];
-            $tabs .= '</a>';
-            $tabs .= '</li>';
-
-
-            $tab_content .= '<div id="tab_' . $content['comp_id'] . $i . '" class="tab-pane entry-content fade in clearfix ' . $active . '">';
-
-            $tab_content .= apply_filters('the_content', $tabbed_pair['content']);
-            $tab_content .= '</div><!--tab-pane-->';
         }
         $tabs .= '</ul><!--nav-tabs-->';
         $tab_content .= '</div><!--tab-content-->';
