@@ -62,6 +62,9 @@ function jma_comp_css()
         $print .= $comp_obj->css();
     }
     $print .= '
+    .jma-component i {
+        display: none
+    }
     .jma-tabbed .nav li a {
     white-space: nowrap;
     }
