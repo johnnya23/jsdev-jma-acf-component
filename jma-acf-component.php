@@ -181,7 +181,9 @@ function acf_component_shortcode($atts = array())
     ob_start();
     $comps = jma_comp_setup_objs();
     $this_comp = $comps[$id];
-    echo $this_comp->markup();
+    if (is_object($this_comp)) {
+        echo $this_comp->markup();
+    }
     $x = ob_get_contents();
     ob_end_clean();
 
